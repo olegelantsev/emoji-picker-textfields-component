@@ -3,6 +3,28 @@ import emojiConverter from '../emojiConverter';
 import PropTypes from 'prop-types';
 import EmojiPicker from 'emoji-picker-react';
 import './style.scss';
+import { withStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import classNames from 'classnames';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Popover from '@material-ui/core/Popover';
+
+const styles = theme => ({
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+    },
+    menu: {
+        width: 200,
+    },
+});
 
 class EmojiField extends Component {
     constructor(props) {
@@ -11,7 +33,8 @@ class EmojiField extends Component {
         this.state = {
             value: props.value || '',
             initialMount: false,
-            pickerOpen: props.pickerOpen || false
+            pickerOpen: props.pickerOpen || false,
+            anchorEl: null,
         };
 
         this.emojiConverter = emojiConverter(props.config);
@@ -82,16 +105,18 @@ class EmojiField extends Component {
 
     closePicker() {
         this.setState({
-            pickerOpen: false
+            pickerOpen: false,
+            anchorEl: null,
         }, () => {
             window.removeEventListener('click', this.isAnOutsideClick);
             window.removeEventListener('keyup', this.onPickerkeypress);
         });
     }
 
-    openPicker() {
+    openPicker(event) {
         this.setState({
-            pickerOpen: true
+            pickerOpen: true,
+            anchorEl: event.currentTarget,
         }, () => {
             window.addEventListener('click', this.isAnOutsideClick);
             window.addEventListener('keyup', this.onPickerkeypress);
@@ -102,7 +127,7 @@ class EmojiField extends Component {
         e.preventDefault();
         e.stopPropagation();
 
-        this.state.pickerOpen ? this.closePicker() : this.openPicker();
+        this.state.pickerOpen ? this.closePicker() : this.openPicker(e);
     }
 
     onEmojiClick(code, emoji) {
@@ -126,20 +151,48 @@ class EmojiField extends Component {
     }
 
     render() {
-        const { autoClose, onChange, config, fieldType, ...rest } = this.props;
+        const { autoClose, onChange, config, fieldType, classes, ...rest } = this.props;
 
         const isOpenClass = this.state.pickerOpen ? 'shown' : 'hidden',
             className = `emoji-text-field picker-${isOpenClass} emoji-${fieldType}`,
-            { value, pickerOpen } = this.state,
-            isInput = fieldType === 'input',
+            { value, pickerOpen, anchorEl } = this.state,
             ref = (_field) => this._field = _field;
 
         return (
             <div className={className}>
-                {(isInput) && (<input {...rest} onChange={this.onChange} type="text" ref={ref} value={value}/>)}
-                {(!isInput) && (<textarea {...rest} onChange={this.onChange} ref={ref} value={value}/>)}
-                <a href="#!" className="emoji-trigger" onClick={this.onTriggerClick}></a>
-                { pickerOpen && <EmojiPicker onEmojiClick={this.onEmojiClick} ref={(picker) => this._picker = picker}/>}
+                <FormControl className={classNames(classes.margin, classes.textField)}>
+                    <InputLabel htmlFor="adornment-password">Password</InputLabel>
+                    <Input
+                        id="adornment-password"
+                        value={value}
+                        onChange={this.onChange}
+                        ref={ref}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <a href="#!" className="emoji-trigger" onClick={this.onTriggerClick}></a>
+                            </InputAdornment>
+                        }
+                        {...rest}
+                    />
+                </FormControl>
+                {
+                    <Popover
+                        id="simple-popper"
+                        open={pickerOpen}
+                        anchorEl={anchorEl}
+                        onClose={this.closePicker}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                    >
+                        <EmojiPicker onEmojiClick={this.onEmojiClick} ref={(picker) => this._picker = picker} />
+                    </Popover>
+                }
             </div>
         );
     }
@@ -151,7 +204,8 @@ EmojiField.propTypes = {
     autoClose: PropTypes.bool,
     onChange: PropTypes.func,
     config: PropTypes.object,
-    fieldType: PropTypes.string.isRequired
+    fieldType: PropTypes.string.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
-export default EmojiField;
+export default withStyles(styles)(EmojiField);

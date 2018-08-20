@@ -30,6 +30,8 @@ class JustAWrapper extends React.Component {
                         <EmojiField {...rest}
                             onChange={this.onChange}
                             ref={(_field) => this._field = _field}
+                            multiline={true}
+                            type={'text'}
                             fieldType="input"/>
                     </div>
                 </div>
