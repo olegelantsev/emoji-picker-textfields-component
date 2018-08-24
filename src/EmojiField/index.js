@@ -143,7 +143,7 @@ class EmojiField extends Component {
             value: newValue
         }, () => {
             this._field.selectionStart = selection + shortcode.length;
-            this.onChange(null);
+            this.onChange(null, newValue);
         });
 
         if (this.props.autoClose) {
@@ -164,7 +164,6 @@ class EmojiField extends Component {
                 <FormControl className={classNames(classes.margin, classes.textField)}>
                     <InputLabel htmlFor="adornment-password">Password</InputLabel>
                     <Input
-                        id="adornment-password"
                         value={value}
                         onChange={this.onChange}
                         inputRef={ref}
