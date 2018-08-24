@@ -136,7 +136,8 @@ class EmojiField extends Component {
             shortcode = `:${emoji.name}:`,
             v1 = value.slice(0, selection),
             v2 = value.slice(selection),
-            newValue = `${v1}${shortcode}${v2}`;
+            emojiUnicode=String.fromCodePoint('0x' + emoji.unified),
+            newValue = `${v1}${emojiUnicode}${v2}`;
 
         this.setState({
             value: newValue
@@ -166,7 +167,7 @@ class EmojiField extends Component {
                         id="adornment-password"
                         value={value}
                         onChange={this.onChange}
-                        ref={ref}
+                        inputRef={ref}
                         endAdornment={
                             <InputAdornment position="end">
                                 <a href="#!" className="emoji-trigger" onClick={this.onTriggerClick}></a>
