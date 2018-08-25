@@ -28,9 +28,12 @@ class JustAWrapper extends React.Component {
                     <div className="unified" dangerouslySetInnerHTML={html}/>
                     <div style={{height: '25px'}}>
                         <EmojiField {...rest}
+                            id="textarea"
+                            label="With placeholder multiline"
+                            placeholder="Placeholder"
                             onChange={this.onChange}
                             ref={(_field) => this._field = _field}
-                            multiline={true}
+                            multiline
                             type={'text'}
                             fieldType="input"/>
                     </div>

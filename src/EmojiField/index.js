@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import EmojiPicker from 'emoji-picker-react';
 import './style.scss';
 import { withStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import classNames from 'classnames';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Popover from '@material-ui/core/Popover';
 
@@ -15,15 +12,11 @@ const styles = theme => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-    },
-    textField: {
+      },
+      textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 200,
-    },
-    menu: {
-        width: 200,
-    },
+      }
 });
 
 class EmojiField extends Component {
@@ -152,17 +145,15 @@ class EmojiField extends Component {
     }
 
     render() {
-        const { autoClose, onChange, config, fieldType, classes, ...rest } = this.props;
+        const { autoClose, onChange, config, fieldType, classes, label, id, ...rest } = this.props;
 
         const isOpenClass = this.state.pickerOpen ? 'shown' : 'hidden',
-            className = `emoji-text-field picker-${isOpenClass} emoji-${fieldType}`,
+            className = `emoji-text-field picker-${isOpenClass}`,
             { value, pickerOpen, anchorEl } = this.state,
             ref = (_field) => this._field = _field;
 
         return (
             <div className={className}>
-                <FormControl className={classNames(classes.margin, classes.textField)}>
-                    <InputLabel htmlFor="adornment-password">Password</InputLabel>
                     <Input
                         value={value}
                         onChange={this.onChange}
@@ -174,7 +165,7 @@ class EmojiField extends Component {
                         }
                         {...rest}
                     />
-                </FormControl>
+                
                 {
                     <Popover
                         id="simple-popper"
