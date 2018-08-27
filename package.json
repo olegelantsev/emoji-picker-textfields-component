@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ealush/emoji-picker-textfields-component.git"
+    "url": "git+https://github.com/olegelantsev/emoji-picker-textfields-component.git"
   },
   "author": "Evyatar Alush",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ealush/emoji-picker-textfields-component/issues"
+    "url": "https://github.com/olegelantsev/emoji-picker-textfields-component/issues"
   },
-  "homepage": "https://github.com/ealush/emoji-picker-textfields-component#readme",
+  "homepage": "https://github.com/olegelantsev/emoji-picker-textfields-component#readme",
   "dependencies": {
     "@material-ui/core": "^1.5.1",
     "@material-ui/icons": "^2.0.3",
